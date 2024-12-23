@@ -1,14 +1,16 @@
 import https from "https";
 import Readline from "readline";
 import chalk from "chalk";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const rl = Readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-const apikey = "2f2d2ce2903319a21a25166e";
-const url = `https://v6.exchangerate-api.com/v6/${apikey}/latest/USD`;
+const url = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY_CURRENCY}/latest/USD`;
 
 const convertCurrency = (amount, rate) => (amount * rate).toFixed(2);
 
