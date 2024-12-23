@@ -8,7 +8,7 @@ const rl = Readline.createInterface({
 });
 
 const apikey = "2f2d2ce2903319a21a25166e";
-const url = `https://v6.exchangerate-api.com/v6/2f2d2ce2903319a21a25166e/latest/USD`;
+const url = `https://v6.exchangerate-api.com/v6/${apikey}/latest/USD`;
 
 const convertCurrency = (amount, rate) => (amount * rate).toFixed(2);
 
