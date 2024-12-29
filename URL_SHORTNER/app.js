@@ -24,7 +24,7 @@ const serveFile = async (res, filePath, contentType) => {
 const loadLinks = async () => {
   try {
     const data = await readFile(DATA_FILE, "utf-8");
-    return JSON.parse(data);
+    return data ? JSON.parse(data) : {};
   } catch (error) {
     //* ENOENT = Error No Entry :- There is no files through which data needs to be read
     if (error.code === "ENOENT") {
@@ -48,11 +48,26 @@ const server = createServer(async (req, res) => {
     //* When html file is given as response then due to <link stylesheet> get request to the server for path /style.css is generated so in else if there is path = "/style.css"
     else if (req.url === "/style.css") {
       return serveFile(res, path.join("public", "style.css"), "text/css");
+    } else if (req.url === "/links") {
+      const links = await loadLinks();
+      res.writeHead(200, { "content-type": "application/json" });
+      return res.end(JSON.stringify(links));
+    } else {
+      const links = await loadLinks();
+      const shortCode = req.url.slice(1);
+      console.log("red.", req.url);
+      if (links[shortCode]) {
+        res.writeHead(302, { location: links[shortCode] });
+        return res.end();
+      }
+
+      res.writeHead(404, { "content-type": "text/plain" });
+      return res.end("URL not found");
     }
   }
-  const links = await loadLinks();
 
   if (req.method === "POST" && req.url === "/shorten") {
+    const links = await loadLinks();
     let body = "";
     req.on("data", (chunk) => {
       body += chunk;
