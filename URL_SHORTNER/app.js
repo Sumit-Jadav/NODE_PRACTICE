@@ -8,7 +8,7 @@ import { writeFile } from "fs/promises";
 dotenv.config();
 
 const PORT = 5000;
-const DATA_FILE = path.join("data", "links.json");
+const DATA_FILE = path.join("URL_SHORTNER", "data", "links.json");
 
 const serveFile = async (res, filePath, contentType) => {
   try {
@@ -43,11 +43,19 @@ const saveLinks = async (links) => {
 const server = createServer(async (req, res) => {
   if (req.method === "GET") {
     if (req.url === "/") {
-      return serveFile(res, path.join("public", "index.html"), "text/html");
+      return serveFile(
+        res,
+        path.join("URL_SHORTNER", "public", "index.html"),
+        "text/html"
+      );
     }
     //* When html file is given as response then due to <link stylesheet> get request to the server for path /style.css is generated so in else if there is path = "/style.css"
     else if (req.url === "/style.css") {
-      return serveFile(res, path.join("public", "style.css"), "text/css");
+      return serveFile(
+        res,
+        path.join("URL_SHORTNER", "public", "style.css"),
+        "text/css"
+      );
     } else if (req.url === "/links") {
       const links = await loadLinks();
       res.writeHead(200, { "content-type": "application/json" });
