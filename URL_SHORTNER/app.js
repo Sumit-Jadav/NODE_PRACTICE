@@ -2,10 +2,8 @@ import { readFile } from "fs/promises";
 import { createServer } from "http";
 import path from "path";
 import crypto from "crypto";
-import dotenv from "dotenv";
-import { writeFile } from "fs/promises";
 
-dotenv.config();
+import { writeFile } from "fs/promises";
 
 const PORT = 5000;
 const DATA_FILE = path.join("URL_SHORTNER", "data", "links.json");
